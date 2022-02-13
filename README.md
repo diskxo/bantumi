@@ -47,7 +47,7 @@ and save it into your local workspace.
 #### Windows
 
 - [SFML 2.5.1 - GCC 7.3.0 MinGW (DW2) 32-bit (for Windows)](https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit.zip)
-- [GCC 7.3.0 MinGW (DW2) 32-bit (for Windows)](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download)
+- [GCC 7.3.0 MinGW (DW2) 32-bit (for Windows)](https://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z?ts=gAAAAABiCPISZlK6KeJPFkS8_Njt5-hapDJK8HRnt_RnH-rFaZAX1xCODdbRhImYmibYQkervhYczQM9d5dzqgzLkXMObiYChg%3D%3D&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw-w64%2Ffiles%2FToolchains%2520targetting%2520Win32%2FPersonal%2520Builds%2Fmingw-builds%2F7.3.0%2Fthreads-posix%2Fdwarf%2Fi686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z%2Fdownload)
 - [Git Bash (for Windows) ](https://git-scm.com/downloads)
 
 #### MacOS
