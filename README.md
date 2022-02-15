@@ -45,8 +45,6 @@ and save it into your local workspace.
 ## Prerequisites
 --
 
-----
-
 ## Installing
 
 --
