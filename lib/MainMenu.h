@@ -1,4 +1,4 @@
-#include "Platform/Platform.hpp"
+/*#include "Platform/Platform.hpp"
 #include <iostream>
 using namespace util;
 using namespace std;
@@ -26,4 +26,4 @@ private:
 	int MainMenuSelected;
 	Font font;
 	Text mainMenu[Max_main_menu];
-};
+};*/
