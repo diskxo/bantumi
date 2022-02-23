@@ -30,6 +30,9 @@ int main()
 	sf::RectangleShape enemySocket[6], allySocket[6], barnEnemy, barnAlly;
 	// define counter text
 	sf::Text counterText[14];
+	// define font
+	sf::Font font;
+	font.loadFromFile("./src/assets/fonts/Roboto-Black.ttf");
 
 	// define value of sockets
 	/*int socketValue[14];
@@ -84,14 +87,38 @@ int main()
 		}
 
 		// insert text counter in all of the sockets
-		for (int l = 0, pos = 133; l < 6; l++, pos += 150)
+		for (int l = 0; l < 6; l++)
 		{
+			counterText[l].setFont(font); // font is a sf::Font
 
-			counterText[l].setString("Stim ");
-			counterText[l].setCharacterSize(16);
-			counterText[l].setPosition(pos, 150);
+			counterText[l].setString("1");
+			counterText[l].setCharacterSize(20);
+
+			sf::FloatRect rectBounds = enemySocket[l].getGlobalBounds();
+			sf::FloatRect textBounds = counterText[l].getGlobalBounds();
+
+			counterText[l].setPosition(
+				rectBounds.left + (rectBounds.width / 2) - (textBounds.width / 2),
+				rectBounds.top + (rectBounds.height / 2) - textBounds.height);
+
 			counterText[l].setFillColor(sf::Color::White);
-			counterText[l].setStyle(sf::Text::Bold | sf::Text::Underlined);
+			window.draw(counterText[l]);
+		}
+		for (int l = 0; l < 6; l++)
+		{
+			counterText[l].setFont(font); // font is a sf::Font
+
+			counterText[l].setString("1");
+			counterText[l].setCharacterSize(20);
+
+			sf::FloatRect rectBounds = allySocket[l].getGlobalBounds();
+			sf::FloatRect textBounds = counterText[l].getGlobalBounds();
+
+			counterText[l].setPosition(
+				rectBounds.left + (rectBounds.width / 2) - (textBounds.width / 2),
+				rectBounds.top + (rectBounds.height / 2) - textBounds.height);
+
+			counterText[l].setFillColor(sf::Color::White);
 			window.draw(counterText[l]);
 		}
 
@@ -107,7 +134,6 @@ int main()
 		barnAlly.setFillColor(Color::Red);
 		barnAlly.setOutlineThickness(1.0f);
 		window.draw(barnAlly);
-
 		// end the current frame and display its contents on screen
 		window.display();
 	}
