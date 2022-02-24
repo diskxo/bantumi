@@ -4,9 +4,28 @@
 #include <stdlib.h>
 #include <string>
 #include <time.h>
+
+// sleep functions
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <unistd.h>
+#endif // _WIN32
+
 using namespace util;
 using namespace std;
 using namespace sf;
+
+void sleepcp(int milliseconds);
+
+void sleepcp(int milliseconds) // Cross-platform sleep function
+{
+#ifdef _WIN32
+	Sleep(milliseconds);
+#else
+	usleep(milliseconds * 1000);
+#endif // _WIN32
+}
 
 int main()
 {
@@ -92,14 +111,17 @@ int main()
 								std::cout << "click " << std::endl;
 								if (l > 6 && l != 13)
 								{
-									for (int i = socketValue[l], c = 1; socketValue[l] != 0; i++, c++)
+									for (int i = socketValue[l], c = 1, c1 = 0; socketValue[l] != 0; i++, c++, socketValue[l]--)
 									{
-										if ((l + c) > 14)
+										if ((l + c) > 13)
 										{
+											socketValue[c1]++;
+											c1++;
 										}
-
-										socketValue[l + c]++;
-										socketValue[l]--;
+										else
+										{
+											socketValue[l + c]++;
+										}
 									}
 								}
 								else
@@ -109,18 +131,15 @@ int main()
 							}
 						}
 					}
-
 				default:
 					break;
 			}
 		}
-		// clear the whole window before rendering a new frame
-		window.clear();
 		// draw texture
 		window.draw(sprite);
 
 		// draw sockets, barns and bean counters
-		for (int l = 0, pos = 83; l < 14; l++, pos += 150)
+		for (int l = 0, pos = 83, initpos = 833; l < 14; l++, pos += 150, initpos -= 150)
 		{
 
 			socket[l].setSize(sf::Vector2f(100, 100));
@@ -130,7 +149,7 @@ int main()
 			if (l < 6)
 			{
 				// draw enemy sockets
-				socket[l].setPosition(Vector2f(pos, 100));
+				socket[l].setPosition(Vector2f(initpos, 100));
 			}
 			else if (l < 13 && l > 6)
 			{
