@@ -20,7 +20,7 @@ int main()
 
 	// inititialize time random seed
 	srand(time(NULL));
-	int eachBean = rand() % 6 + 3;
+	int eachBean = rand() % 4 + 3;
 
 	// load background
 	Texture texture;
@@ -33,6 +33,28 @@ int main()
 	float yPos = (float)720 / 2;
 	sprite.setPosition(xPos, yPos);
 
+	// backend
+
+	//int barnAlly = 0, barnEnemy = 0;
+	// define value of sockets
+	int socketValue[14];
+	// initialize all elements with the random value and barns with o
+	for (int i = 0; i < 14; i++)
+	{
+		socketValue[i] = eachBean;
+		switch (i)
+		{
+			case 6:
+				socketValue[i] = 0;
+				break;
+			case 13:
+				socketValue[i] = 0;
+				break;
+			default:
+				break;
+		}
+	}
+
 	// define sockets
 	sf::RectangleShape socket[14];
 	// define counter text
@@ -41,20 +63,12 @@ int main()
 	sf::Font font;
 	font.loadFromFile("./src/assets/fonts/Roboto-Black.ttf");
 
-	// define value of sockets
-	/*int socketValue[13];
-	// start all elements with a value of 6
-	for (int i = 0; i < 14; i++)
-	{
-		socketValue[i] = 6;
-	}*/
-
 	void draw(RenderWindow * window);
 	Event evnt;
 
 	while (window.isOpen())
-	{
-
+	{ /*
+*/
 		while (window.pollEvent(evnt))
 		{
 			//Manage events
@@ -63,6 +77,38 @@ int main()
 				case Event::Closed:
 					window.close();
 					break;
+				case Event::MouseButtonPressed:
+					if (evnt.mouseButton.button == sf::Mouse::Left)
+					{
+						std::cout << "mouse x: " << evnt.mouseButton.x << std::endl;
+						std::cout << "mouse y: " << evnt.mouseButton.y << std::endl;
+
+						auto mouse_pos = sf::Mouse::getPosition(window);
+						auto translated_pos = window.mapPixelToCoords(mouse_pos);
+						for (int l = 0; l < 14; l++)
+						{
+							if (socket[l].getGlobalBounds().contains(translated_pos))
+							{
+								std::cout << "click " << std::endl;
+								if (l > 6 && l != 13)
+								{
+									for (int i = socketValue[l], c = 1; socketValue[l] != 0; i++, c++)
+									{
+										if ((l + c) > 14)
+										{
+										}
+
+										socketValue[l + c]++;
+										socketValue[l]--;
+									}
+								}
+								else
+								{
+									std::cout << "non puoi bigol " << std::endl;
+								}
+							}
+						}
+					}
 
 				default:
 					break;
@@ -107,7 +153,7 @@ int main()
 
 			// counters settings
 			counterText[l].setFont(font);
-			counterText[l].setString(to_string(eachBean));
+			counterText[l].setString(to_string(socketValue[l]));
 			counterText[l].setCharacterSize(20);
 
 			sf::FloatRect rectBounds = socket[l].getGlobalBounds();
