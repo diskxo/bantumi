@@ -1,4 +1,5 @@
 #include "Platform/Platform.hpp"
+#include <vsPlayer/Game.h>
 
 #include <iostream>
 #include <stdio.h>
@@ -10,7 +11,7 @@ using namespace util;
 using namespace std;
 using namespace sf;
 
-int main()
+void foo()
 {
 
 #if defined(_DEBUG)
@@ -19,6 +20,7 @@ int main()
 
 	// create window
 	RenderWindow window(VideoMode(1024, 720), "Bantumi", Style::Close);
+	int turn = 0;
 
 	// inititialize time random seed
 	srand(time(NULL));
@@ -69,8 +71,8 @@ int main()
 	Event evnt;
 
 	while (window.isOpen())
-	{ /*
-*/
+	{
+
 		while (window.pollEvent(evnt))
 		{
 			//Manage events
@@ -82,38 +84,117 @@ int main()
 				case Event::MouseButtonPressed:
 					if (evnt.mouseButton.button == sf::Mouse::Left)
 					{
-						std::cout << "mouse x: " << evnt.mouseButton.x << std::endl;
-						std::cout << "mouse y: " << evnt.mouseButton.y << std::endl;
 
 						auto mouse_pos = sf::Mouse::getPosition(window);
 						auto translated_pos = window.mapPixelToCoords(mouse_pos);
+
 						for (int l = 0; l < 14; l++)
 						{
-							if (socket[l].getGlobalBounds().contains(translated_pos))
+							if (turn == 0)
 							{
-								std::cout << "click " << std::endl;
-								if (l > 6 && l != 13)
+								if (socket[l].getGlobalBounds().contains(translated_pos))
 								{
-									for (int i = socketValue[l], c = 1, c1 = 0; socketValue[l] != 0; i++, c++, socketValue[l]--)
+									if (l > 6 && l != 13)
 									{
-										if ((l + c) > 13)
+										if (socketValue[l + socketValue[l]] == 0 && l + socketValue[l] != 13 && l + socketValue[l] != 6)
 										{
-											socketValue[c1]++;
-											c1++;
+											socketValue[13] += socketValue[12 - l];
+											socketValue[12 - (l + socketValue[l])] = 0;
 										}
-										else
+
+										for (int i = socketValue[l], c = 1, c1 = 0; socketValue[l] != 0; i++, c++, socketValue[l]--)
 										{
-											socketValue[l + c]++;
+											if ((l + c) > 13)
+											{
+												if (c1 == 6)
+												{
+													c1++;
+												}
+												socketValue[c1]++;
+												c1++;
+												turn = 1;
+											}
+											else
+											{
+												socketValue[l + c]++;
+												if (l + c == 13)
+												{
+													turn = 0;
+												}
+												else
+												{
+													turn = 1;
+												}
+											}
 										}
 									}
 								}
-								else
+							}
+							else
+							{
+								if (socket[l].getGlobalBounds().contains(translated_pos))
 								{
-									std::cout << "non puoi bigol " << std::endl;
+									if (l < 6)
+									{
+
+										if (socketValue[l + socketValue[l]] == 0 && l + socketValue[l] != 13 && l + socketValue[l] != 6)
+										{
+											socketValue[6] += socketValue[12 - l];
+											socketValue[12 - (l + socketValue[l])] = 0;
+										}
+
+										for (int i = socketValue[l], c = 1; socketValue[l] != 0; i++, c++, socketValue[l]--)
+										{
+											if (l + c == 13)
+											{
+												c++;
+											}
+											socketValue[l + c]++;
+
+											if (l + c == 6)
+											{
+												turn = 1;
+											}
+											else
+											{
+												turn = 0;
+											}
+										}
+									}
 								}
 							}
 						}
+
+						int totalValueAlly = 0;
+						int totalValueEnemy = 0;
+						for (int i = 0; i < 6; i++)
+						{
+							totalValueAlly += socketValue[i];
+						}
+						if (totalValueAlly == 0)
+						{
+							cout << "Player 2 wins!\n";
+						}
+						else if (socketValue[6] > (eachBean * 12) / 2)
+						{
+							cout << "Player 2 wins!\n";
+						}
+
+						for (int i = 7; i < 13; i++)
+						{
+							totalValueEnemy += socketValue[i];
+						}
+						if (totalValueEnemy == 0)
+						{
+							cout << "Player 1 wins!\n";
+						}
+						else if (socketValue[13] > (eachBean * 12) / 2)
+						{
+							cout << "Player 1 wins!\n";
+						}
 					}
+					break;
+
 				default:
 					break;
 			}
@@ -172,6 +253,4 @@ int main()
 		// end the current frame and display its contents on screen
 		window.display();
 	}
-
-	return 0;
 }
