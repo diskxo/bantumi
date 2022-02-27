@@ -101,6 +101,8 @@ int main()
 							break;
 						case 1:
 							cout << "vcpu pressed\n";
+							MainMenu.close();
+							vscpu();
 							break;
 						case 2:
 							cout << "exit pressed\n";

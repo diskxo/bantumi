@@ -11,7 +11,20 @@ using namespace util;
 using namespace std;
 using namespace sf;
 
-void foo()
+int cpuBrain(int sockets)
+{
+	int counter = 0;
+	for (int i = 7; i < 13; i++)
+	{
+		// check if there is a move that allows to steal beans from the opponent
+		int counter = sockets[i];
+		if (sockets[i + counter] == 0 && sockets[])
+		{
+		}
+	}
+}
+
+void vscpu()
 {
 
 #if defined(_DEBUG)
@@ -102,7 +115,7 @@ void foo()
 									if (l > 6 && l != 13)
 									{
 										// check if the ultimate bean goes into a 0 socket
-										if (socketValue[l + socketValue[l]] == 0 && l + socketValue[l] > 6 && l + socketValue[l] < 13)
+										if (socketValue[l + socketValue[l]] == 0 && l + socketValue[l] < 13 && l + socketValue[l] > 6)
 										{
 											socketValue[13] += socketValue[12 - l];
 											socketValue[12 - (l + socketValue[l])] = 0;
@@ -139,39 +152,7 @@ void foo()
 							}
 							else
 							{
-								if (socket[l].getGlobalBounds().contains(translated_pos))
-								{
-									if (l < 6)
-									{
-
-										if (socketValue[l + socketValue[l]] == 0 && l + socketValue[l] < 6)
-										{
-											socketValue[6] += socketValue[12 - (socketValue[l])];
-
-											socketValue[12 - (l + socketValue[l])] = 0;
-										}
-
-										for (int i = socketValue[l], c = 1; socketValue[l] != 0; i++, c++, socketValue[l]--)
-										{
-
-											if (l + c == 13)
-											{
-												c++;
-											}
-											socketValue[l + c]++;
-
-											// check if the ultimate bean goes into the barn
-											if (l + c == 6)
-											{
-												turn = 1;
-											}
-											else
-											{
-												turn = 0;
-											}
-										}
-									}
-								}
+								cpuBrain(socketValue);
 							}
 						}
 						// set player turn
@@ -197,30 +178,10 @@ void foo()
 						if (totalValueAlly == 0)
 						{
 							cout << "Player 2 wins!\n";
-							cout << "Player 2 wins!\n";
-							sf::Text winText;
-							//center text
-							sf::FloatRect textRect = winText.getLocalBounds();
-							winText.setFont(font);
-							winText.setString("Player 1 wins!");
-							winText.setCharacterSize(20);
-							winText.setOrigin(textRect.left + textRect.width / 2.0f,
-								textRect.top + textRect.height / 2.0f);
-							winText.setPosition(sf::Vector2f(1024 / 2.0f, 720 / 2.0f));
 						}
 						else if (socketValue[6] > (eachBean * 12) / 2)
 						{
 							cout << "Player 2 wins!\n";
-							cout << "Player 2 wins!\n";
-							sf::Text winText;
-							//center text
-							sf::FloatRect textRect = winText.getLocalBounds();
-							winText.setFont(font);
-							winText.setString("Player 1 wins!");
-							winText.setCharacterSize(20);
-							winText.setOrigin(textRect.left + textRect.width / 2.0f,
-								textRect.top + textRect.height / 2.0f);
-							winText.setPosition(sf::Vector2f(1024 / 2.0f, 720 / 2.0f));
 						}
 
 						for (int i = 7; i < 13; i++)
@@ -230,30 +191,10 @@ void foo()
 						if (totalValueEnemy == 0)
 						{
 							cout << "Player 1 wins!\n";
-							sf::Text winText;
-							//center text
-							sf::FloatRect textRect = winText.getLocalBounds();
-							winText.setFont(font);
-							winText.setString("Player 1 wins!");
-							winText.setCharacterSize(20);
-							winText.setOrigin(textRect.left + textRect.width / 2.0f,
-								textRect.top + textRect.height / 2.0f);
-							winText.setPosition(sf::Vector2f(1024 / 2.0f, 720 / 2.0f));
-							window.draw(winText);
 						}
 						else if (socketValue[13] > (eachBean * 12) / 2)
 						{
 							cout << "Player 1 wins!\n";
-							cout << "Player 1 wins!\n";
-							sf::Text winText;
-							//center text
-							sf::FloatRect textRect = winText.getLocalBounds();
-							winText.setFont(font);
-							winText.setString("Player 1 wins!");
-							winText.setCharacterSize(20);
-							winText.setOrigin(textRect.left + textRect.width / 2.0f,
-								textRect.top + textRect.height / 2.0f);
-							winText.setPosition(sf::Vector2f(1024 / 2.0f, 720 / 2.0f));
 						}
 					}
 					break;
