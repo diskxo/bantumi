@@ -33,7 +33,8 @@
 		"iostream": "cpp",
 		"fstream": "cpp",
 		"xlocmes": "cpp",
-		"string": "cpp"
+		"string": "cpp",
+		"xiosbase": "cpp"
 	},
 	"terminal.integrated.automationShell.windows": "C:/Program Files/Git/bin/bash.exe",
 	"terminal.integrated.env.windows": {

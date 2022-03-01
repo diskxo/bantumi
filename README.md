@@ -159,6 +159,7 @@ Comments must be formatted by leaving a dedicated line within the code, and must
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [GCC](https://gcc.gnu.org/) - C++ compiler
+- [MinGW](https://www.mingw-w64.org/) - Support C++ compiler
 - [SFML](https://www.sfml-dev.org) - Game Library
 - [Visual Studio Code](https://code.visualstudio.com/) - Text Editor
 
@@ -168,4 +169,5 @@ Comments must be formatted by leaving a dedicated line within the code, and must
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-- Remake of the original game version into the Nokia 3310 phone
+Remake of the original game version into the Nokia 3310 phone.
+More about the game [here](https://en.wikipedia.org/wiki/Kalah).

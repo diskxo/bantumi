@@ -114,6 +114,7 @@ int manageTurn(int sockets[], int turn, int l)
 				sockets[12 - (l + sockets[l])] = 0;
 			}
 
+			// increments the value of the next sockets
 			for (int i = sockets[l], c = 1; sockets[l] != 0; i++, c++, sockets[l]--)
 			{
 

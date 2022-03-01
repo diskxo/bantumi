@@ -7,6 +7,12 @@
 #include <string>
 #include <time.h>
 
+#include <dos.h>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+#include <windows.h>
+
 using namespace util;
 using namespace std;
 using namespace sf;
@@ -50,11 +56,11 @@ void versus(int mode)
 	}
 
 	// define sockets
-	sf::RectangleShape socket[14];
+	RectangleShape socket[14];
 	// define counter text
-	sf::Text counterText[14];
+	Text counterText[14];
 	// define font
-	sf::Font font;
+	Font font;
 	font.loadFromFile("./src/assets/fonts/ArcadeClassic.ttf");
 
 	void draw(RenderWindow * window);
@@ -74,6 +80,7 @@ void versus(int mode)
 
 		while (window.pollEvent(evnt))
 		{
+
 			// manage events
 			switch (evnt.type)
 			{
@@ -82,7 +89,7 @@ void versus(int mode)
 					break;
 				case Event::MouseButtonPressed:
 
-					if (evnt.mouseButton.button == sf::Mouse::Left)
+					if (evnt.mouseButton.button == Mouse::Left)
 					{
 						auto mouse_pos = Mouse::getPosition(window);
 						auto translated_pos = window.mapPixelToCoords(mouse_pos);
@@ -113,34 +120,37 @@ void versus(int mode)
 				playerTurn.setPosition(Vector2f(30, 660));
 			else
 				playerTurn.setPosition(Vector2f(30, 30));
-
-			window.draw(playerTurn);
-
-			winner = checkWin(socketValue, eachBean);
-			if (winner != 0)
-			{
-				// win content
-				Text winText;
-				cout << "Player" << winner << " wins!\n";
-				Text winnerText;
-				FloatRect textRect = winText.getLocalBounds();
-				winText.setFont(font);
-				winText.setString("Player wins!");
-				winText.setCharacterSize(60);
-				winText.setOrigin(textRect.left + textRect.width / 2.0f,
-					textRect.top + textRect.height / 2.0f);
-				winText.setPosition(sf::Vector2f(1024 / 2.0f, 720 / 2.0f));
-				window.draw(winText);
-			}
 		}
 		// draw texture, player turn and winner text
 		window.draw(sprite);
+
+		winner = checkWin(socketValue, eachBean);
+		if (winner != 0)
+		{
+			// win content
+			Text winText;
+			FloatRect textRect = winText.getLocalBounds();
+			winText.setFont(font);
+			winText.setString("Player  " + to_string(winner) + "  wins!");
+			winText.setCharacterSize(60);
+			winText.setOrigin(textRect.left + textRect.width / 2.0f,
+				textRect.top + textRect.height / 2.0f);
+			winText.setPosition(Vector2f((1024 / 2.0f) - 210, (720 / 2.0f) - 50));
+			winText.setFillColor(Color::White);
+			window.draw(winText);
+		}
+
 		window.draw(playerTurn);
 
+		int lastSocketValue[14];
+		for (int i = 0; i < 14; i++)
+		{
+			lastSocketValue[i] = socketValue[i];
+		}
 		// draw sockets, barns and bean counters
 		for (int l = 0, pos = 83, initpos = 833; l < 14; l++, pos += 150, initpos -= 150)
 		{
-			socket[l].setSize(sf::Vector2f(100, 100));
+			socket[l].setSize(Vector2f(100, 100));
 			socket[l].setFillColor(Color::Blue);
 			socket[l].setOutlineThickness(1.0f);
 
@@ -173,16 +183,26 @@ void versus(int mode)
 			counterText[l].setString(to_string(socketValue[l]));
 			counterText[l].setCharacterSize(40);
 
-			sf::FloatRect rectBounds = socket[l].getGlobalBounds();
-			sf::FloatRect textBounds = counterText[l].getGlobalBounds();
+			FloatRect rectBounds = socket[l].getGlobalBounds();
+			FloatRect textBounds = counterText[l].getGlobalBounds();
 
 			// set counters to center
 			counterText[l].setPosition(
 				rectBounds.left + (rectBounds.width / 2) - (textBounds.width / 2),
 				rectBounds.top + ((rectBounds.height / 2) - 10) - textBounds.height);
 
-			counterText[l].setFillColor(sf::Color::White);
-			window.draw(counterText[l]);
+			counterText[l].setFillColor(Color::White);
+
+			if (socketValue[l] != lastSocketValue[l])
+			{
+				sleep(500);
+				window.draw(counterText[l]);
+			}
+			else
+			{
+				window.draw(counterText[l]);
+			}
+			lastSocketValue[l] = socketValue[l];
 		}
 
 		window.display();
