@@ -1,5 +1,5 @@
 #include "Platform/Platform.hpp"
-#include <vsPlayer/Game.h>
+#include <Game.h>
 
 #include <iostream>
 #include <stdio.h>
@@ -14,109 +14,117 @@ using namespace sf;
 int main()
 {
 
-	// create windows
+	// initialize window
 	RenderWindow MainMenu(VideoMode(1024, 720), "Bantumi", Style::Close);
 
-	sf::Font font;
-	sf::Text mainMenu[3];
-	// load font
-
-	font.loadFromFile("./src/assets/fonts/Roboto-Black.ttf");
-
+	// initialize font, text and variables for main menu
+	Font font;
+	Text mainMenu[3];
+	font.loadFromFile("./src/assets/fonts/ArcadeClassic.ttf");
 	int mainMenuSelected = 0;
-	// 1vs1
-	mainMenu[0].setFont(font);
-	mainMenu[0].setFillColor(Color::White);
-	mainMenu[0].setString("1 VS 1");
-	mainMenu[0].setCharacterSize(40);
-	mainMenu[0].setPosition(500, 100);
 
-	// CPUvs
-	mainMenu[1].setFont(font);
-	mainMenu[1].setFillColor(Color::Blue);
-	mainMenu[1].setString("1 VS CPU");
-	mainMenu[1].setCharacterSize(40);
-	mainMenu[1].setPosition(500, 300);
+	// load background
+	Texture texture;
+	texture.loadFromFile("./src/assets/background.jpg");
+	Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+	float xPos = (float)1024 / 2;
+	float yPos = (float)720 / 2;
+	sprite.setPosition(xPos, yPos);
 
-	// quit
-	mainMenu[2].setFont(font);
-	mainMenu[2].setFillColor(Color::Blue);
-	mainMenu[2].setString("Exit");
-	mainMenu[2].setCharacterSize(40);
-	mainMenu[2].setPosition(500, 500);
+	for (int i = 0, h = 100; i < 3; i++, h += 200)
+	{
+		mainMenu[i].setFont(font);
+		mainMenu[i].setCharacterSize(60);
+		mainMenu[i].setPosition(200, h);
+		mainMenu[i].setFillColor(Color::Blue);
+		switch (i)
+		{
+			case 0:
+				mainMenu[i].setFillColor(Color::White);
+				mainMenu[i].setString("1 VS 1");
+				break;
+			case 1:
+				mainMenu[i].setString("1 VS CPU");
+				break;
+			case 2:
+				mainMenu[i].setString("Exit");
+				break;
+			default:
+				break;
+		}
+	}
 
 	while (MainMenu.isOpen())
 	{
 		Event event;
 
-		MainMenu.clear();
-		MainMenu.draw(mainMenu[0]);
-		MainMenu.draw(mainMenu[1]);
-		MainMenu.draw(mainMenu[2]);
-		MainMenu.display();
-
 		while (MainMenu.waitEvent(event))
 		{
-			if (event.type == Event::Closed)
+			switch (event.type)
 			{
-				MainMenu.close();
-			}
-
-			if (event.type == Event::KeyReleased)
-			{
-				if (event.key.code == Keyboard::Up)
-				{
-					if (mainMenuSelected > 0)
+				case Event::Closed:
+					MainMenu.close();
+					break;
+				case Event::KeyReleased:
+					if (event.key.code == Keyboard::Up)
 					{
-						mainMenu[mainMenuSelected].setFillColor(Color::Blue);
-						MainMenu.clear();
-						mainMenuSelected--;
-						mainMenu[mainMenuSelected].setFillColor(Color::White);
+						if (mainMenuSelected > 0)
+						{
+							mainMenu[mainMenuSelected].setFillColor(Color::Blue);
+							MainMenu.clear();
+							mainMenuSelected--;
+							mainMenu[mainMenuSelected].setFillColor(Color::White);
+						}
+						break;
+					}
+					if (event.key.code == Keyboard::Down)
+					{
+						if (mainMenuSelected < 2)
+						{
+							mainMenu[mainMenuSelected].setFillColor(Color::Blue);
+							MainMenu.clear();
+							mainMenuSelected++;
+
+							mainMenu[mainMenuSelected].setFillColor(Color::White);
+						}
+						break;
+					}
+					if (event.key.code == Keyboard::Return)
+					{
+						int x = mainMenuSelected;
+
+						switch (x)
+						{
+							case 0:
+								MainMenu.close();
+								versus(0);
+								break;
+							case 1:
+								MainMenu.close();
+								versus(1);
+								break;
+							case 2:
+								MainMenu.close();
+								break;
+							default:
+								break;
+						}
 					}
 					break;
-				}
-				if (event.key.code == Keyboard::Down)
-				{
-					if (mainMenuSelected < 2)
-					{
-						mainMenu[mainMenuSelected].setFillColor(Color::Blue);
-						MainMenu.clear();
-						mainMenuSelected++;
-
-						mainMenu[mainMenuSelected].setFillColor(Color::White);
-					}
+				default:
 					break;
-				}
-				if (event.key.code == Keyboard::Return)
-				{
-					int x = mainMenuSelected;
-
-					switch (x)
-					{
-						case 0:
-							cout << "v1 pressed\n";
-							MainMenu.close();
-							foo();
-
-							break;
-						case 1:
-							cout << "vcpu pressed\n";
-							MainMenu.close();
-							vscpu();
-							break;
-						case 2:
-							cout << "exit pressed\n";
-							MainMenu.close();
-							break;
-						default:
-							break;
-					}
-				}
 			}
+
 			MainMenu.clear();
+			// draw texture
+			MainMenu.draw(sprite);
+
 			MainMenu.draw(mainMenu[0]);
 			MainMenu.draw(mainMenu[1]);
 			MainMenu.draw(mainMenu[2]);
+
 			MainMenu.display();
 		}
 	}

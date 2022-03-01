@@ -11,6 +11,7 @@
 [![GitHub Issues](https://img.shields.io/github/issues/diskxo/bantumi)](https://github.com/diskxo/bantumi)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/diskxo/bantumi)](https://img.shields.io/github/issues-pr/diskxo/bantumi)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+[![wakatime](https://wakatime.com/badge/user/65beb3fe-edbf-47a9-a9dc-9253600acc77/project/7da83723-6d37-48f4-80fd-f1cb741be7f3.svg)](https://wakatime.com/badge/user/65beb3fe-edbf-47a9-a9dc-9253600acc77/project/7da83723-6d37-48f4-80fd-f1cb741be7f3)
 
 </div>
 

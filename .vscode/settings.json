@@ -32,7 +32,8 @@
 		"xstring": "cpp",
 		"iostream": "cpp",
 		"fstream": "cpp",
-		"xlocmes": "cpp"
+		"xlocmes": "cpp",
+		"string": "cpp"
 	},
 	"terminal.integrated.automationShell.windows": "C:/Program Files/Git/bin/bash.exe",
 	"terminal.integrated.env.windows": {
