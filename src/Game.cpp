@@ -26,6 +26,7 @@ int cpuBrain(int sockets[14])
 		for (int x = 7; x < 13; x++)
 		{
 			counterOpponent = sockets[x];
+			// checks if the opponent can steal ally beans
 			if (sockets[x + counterOpponent] == 0 && x + counterOpponent < 13)
 			{
 				// checks if it is possible to prevent the opponent from stealing the beans
@@ -39,6 +40,10 @@ int cpuBrain(int sockets[14])
 				// or it removes the beans that can be stolen
 				else
 				{
+					if (i == (12 - (x + sockets[x])))
+					{
+						return i;
+					}
 				}
 			}
 		}
