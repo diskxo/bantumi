@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img src="https://www.ispazio.net/wp-content/uploads/2011/09/Screenshot-2011.09.20-10.49.11.png" alt="Project logo"></a>
+ <img src="https://i.imgur.com/Bw5yXIr.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">Bantumi - diskxo Remake</h3>

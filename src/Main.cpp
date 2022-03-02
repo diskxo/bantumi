@@ -25,7 +25,7 @@ int main()
 
 	// load background
 	Texture texture;
-	texture.loadFromFile("./src/assets/background.jpg");
+	texture.loadFromFile("./src/assets/background.png");
 	Sprite sprite;
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
@@ -36,6 +36,9 @@ int main()
 	for (int i = 0, h = 100; i < 3; i++, h += 200)
 	{
 		mainMenu[i].setFont(font);
+		mainMenu[i].setOutlineThickness(2);
+		mainMenu[i].setOutlineColor(Color::Black);
+
 		mainMenu[i].setCharacterSize(60);
 		mainMenu[i].setPosition(200, h);
 		mainMenu[i].setFillColor(Color::Blue);

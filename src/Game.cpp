@@ -11,62 +11,6 @@ using namespace util;
 using namespace std;
 using namespace sf;
 
-int cpuBrain(int sockets[14])
-{
-	int counterAlly = 0;
-	int counterOpponent = 0;
-	for (int i = 0; i < 6; i++)
-	{
-		// i == contatore da 0 a 6
-		// counter == prende il valore contenuto nell'array socket
-		// socket[i + counter] == prende il valore dell'array che si trova se l'array i viene sommato
-		// i + counter == prende il valore del numero dell'array che si ottiene se viene cliccato il primo
-
-		// predicts whether the opponent will be able to steal the beans
-		for (int x = 7; x < 13; x++)
-		{
-			counterOpponent = sockets[x];
-			// checks if the opponent can steal ally beans
-			if (sockets[x + counterOpponent] == 0 && x + counterOpponent < 13)
-			{
-				// checks if it is possible to prevent the opponent from stealing the beans
-				if (sockets[i + counterOpponent] >= x + counterOpponent)
-				{
-					if (sockets[12 - (x + sockets[x])] > 0)
-					{
-						return i;
-					}
-				}
-				// or it removes the beans that can be stolen
-				else
-				{
-					if (i == (12 - (x + sockets[x])))
-					{
-						return i;
-					}
-				}
-			}
-		}
-
-		// check if there is a move that allows to steal beans from the opponent
-		counterAlly = sockets[i];
-
-		if (sockets[i + counterAlly] == 0 && i + counterAlly < 6 && sockets[12 - (i + counterAlly)] > 1)
-		{
-			return i;
-		}
-		else if (i + counterAlly == 6)
-		{
-			return i;
-		}
-		else if (i + counterAlly > 5)
-		{
-			return i;
-		}
-	}
-	return 0;
-}
-
 int manageTurn(int sockets[], int turn, int l)
 {
 	if (turn == 0)
@@ -120,29 +64,97 @@ int manageTurn(int sockets[], int turn, int l)
 			}
 
 			// increments the value of the next sockets
-			for (int i = sockets[l], c = 1; sockets[l] != 0; i++, c++, sockets[l]--)
+			for (int i = sockets[l], c = 1, c1 = 0; sockets[l] != 0; i++, c++, sockets[l]--)
 			{
-
-				if (l + c == 13)
+				if (l + c > 13)
 				{
-					c++;
-				}
-				sockets[l + c]++;
-
-				// check if the ultimate bean goes into the barn
-				if (l + c == 6)
-				{
-					turn = 1;
+					if (c1 == 13)
+					{
+						c1++;
+					}
+					sockets[c1]++;
+					c1++;
+					turn = 0;
 				}
 				else
 				{
-					turn = 0;
+					if (l + c == 13)
+					{
+						c++;
+					}
+					sockets[l + c]++;
+					// check if the ultimate bean goes into the barn
+					if (l + c == 6)
+					{
+						turn = 1;
+					}
+					else
+					{
+						turn = 0;
+					}
 				}
 			}
 		}
 	}
 
 	return turn;
+}
+
+int cpuBrain(int sockets[14])
+{
+
+	int move = 0;
+	for (int i = 0; i < 6; i++)
+	{
+		sockets[i] = sockets[i];
+
+		if (i + sockets[i] == 6)
+		{
+			move = i;
+			return move;
+		}
+
+		// checks if there is a move that allows to steal beans from the opponent
+		if (sockets[i + sockets[i]] == 0 && i + sockets[i] < 6 && sockets[12 - (i + sockets[i])] > 0 && sockets[i] > 0)
+		{
+			move = i;
+			return move;
+		}
+	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		// predicts whether the opponent will be able to steal the beans
+		for (int x = 7; x < 13; x++)
+		{
+			// checks if the opponent can steal ally beans
+			if (sockets[x + sockets[x]] == 0 && x + sockets[x] < 13 && sockets[x] > 0 && sockets[12 - (x + sockets[x])] > 0)
+			{
+				move = 12 - (x + sockets[x]);
+				return move;
+			}
+		}
+	}
+
+	// if there isn't any move available
+	for (int i = 0; i < 6; i++)
+	{
+		sockets[i] = sockets[i];
+		if (i + sockets[i] > 5)
+		{
+			move = i;
+			return move;
+		}
+	}
+	for (int i = 5; i > 0; i--)
+	{
+		if (sockets[i] != 0)
+		{
+			move = i;
+			return move;
+		}
+	}
+	return move;
 }
 
 int checkWin(int sockets[], int nBeans)

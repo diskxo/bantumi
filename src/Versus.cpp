@@ -28,7 +28,8 @@ void versus(int mode)
 
 	// load background
 	Texture texture;
-	texture.loadFromFile("./src/assets/background.jpg");
+	texture.loadFromFile("./src/assets/background.png");
+
 	Sprite sprite;
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
@@ -71,7 +72,8 @@ void versus(int mode)
 
 	// circle player turn
 	CircleShape playerTurn(20);
-	playerTurn.setFillColor(Color::Blue);
+	Color darkBlue(61, 60, 89);
+	playerTurn.setFillColor(darkBlue);
 	playerTurn.setPosition(Vector2f(30, 660));
 
 	int winner = 0;
@@ -107,22 +109,23 @@ void versus(int mode)
 				default:
 					break;
 			}
-
-			int step;
-			if (mode == 1 && turn == 1)
-			{
-				step = cpuBrain(socketValue);
-				turn = manageTurn(socketValue, turn, step);
-			}
-
-			// set player turn circle
-			if (turn == 0)
-				playerTurn.setPosition(Vector2f(30, 660));
-			else
-				playerTurn.setPosition(Vector2f(30, 30));
 		}
 		// draw texture, player turn and winner text
 		window.draw(sprite);
+
+		// set player turn
+		if (turn == 0)
+		{
+			playerTurn.setPosition(Vector2f(30, 660));
+		}
+		else if (turn == 1)
+		{
+			playerTurn.setPosition(Vector2f(30, 30));
+			if (mode == 1)
+			{
+				turn = manageTurn(socketValue, turn, cpuBrain(socketValue));
+			}
+		}
 
 		winner = checkWin(socketValue, eachBean);
 		if (winner != 0)
@@ -142,16 +145,12 @@ void versus(int mode)
 
 		window.draw(playerTurn);
 
-		int lastSocketValue[14];
-		for (int i = 0; i < 14; i++)
-		{
-			lastSocketValue[i] = socketValue[i];
-		}
 		// draw sockets, barns and bean counters
 		for (int l = 0, pos = 83, initpos = 833; l < 14; l++, pos += 150, initpos -= 150)
 		{
+			Color darkGreen(54, 73, 29);
 			socket[l].setSize(Vector2f(100, 100));
-			socket[l].setFillColor(Color::Blue);
+			socket[l].setFillColor(darkGreen);
 			socket[l].setOutlineThickness(1.0f);
 
 			if (l < 6)
@@ -193,16 +192,7 @@ void versus(int mode)
 
 			counterText[l].setFillColor(Color::White);
 
-			if (socketValue[l] != lastSocketValue[l])
-			{
-				sleep(500);
-				window.draw(counterText[l]);
-			}
-			else
-			{
-				window.draw(counterText[l]);
-			}
-			lastSocketValue[l] = socketValue[l];
+			window.draw(counterText[l]);
 		}
 
 		window.display();
